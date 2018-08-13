@@ -1,0 +1,104 @@
+<script src="bower_components/textFit/textFit.min.js"></script>
+
+<template is="text-fit">
+	<style>
+		:host {
+			display: block;
+			height: 100%;
+			width: 100%;
+		}
+
+		::slotted(.adjustable-slideshow-hidden) {
+			display: none;
+		}
+	</style>
+	<div style="width: 100%; height: 100%;"><slot></slot></div>
+</template>
+
+<script>
+	(function() {
+		const componentDoc =  (document._currentScript || document.currentScript).ownerDocument;
+
+		class TextFit extends HTMLElement {
+			constructor() {
+				super();
+
+				let thisElem = this;
+
+				// Gets content from <template>
+				const shadow = this.attachShadow({mode: 'open'});
+				const template = componentDoc.querySelector('template[is=text-fit]').content;
+				shadow.appendChild(document.importNode(template, true));
+
+				thisElem._textContainer = shadow.querySelector('div');
+
+				// Observe changes to subtree
+				const observer = new MutationObserver(function() {
+					thisElem.resizeText();
+				});
+				observer.observe(thisElem, {attributes: false, childList: true, subtree: true});
+
+				thisElem.resizeText();
+			}
+
+
+			resizeText() {
+
+				const thisElem = this;
+
+				let options = {};
+
+				TextFit.observedAttributes.forEach(function(attributeName) {
+					let attributeVal = thisElem.getAttribute(attributeName);
+					if(attributeVal !== null) {
+						let optionName = TextFit._dashToCamelCase(attributeName);
+
+						switch(optionName) {
+							case 'alignVert':
+							case 'alignHoriz':
+							case 'multiLine':
+							case 'detectMultiLine':
+							case 'reProcess':
+							case 'widthOnly':
+							case 'alignVertWithFlexbox':
+								options[optionName] = (typeof attributeVal === 'boolean') ? attributeVal : Boolean(JSON.parse(attributeVal.toLowerCase()));
+								break;
+							case 'minFontSize':
+							case 'maxFontSize':
+								options[optionName] = parseFloat(attributeVal);
+								break;
+						}
+					}
+				});
+
+				textFit(this._textContainer, options);
+			}
+
+			static get observedAttributes() {
+				return [
+					'align-vert',
+					'align-horiz',
+					'multi-line',
+					'detect-multi-line',
+					'min-font-size',
+					'max-font-size',
+					're-process',
+					'width-only',
+					'align-vert-with-flexbox'
+				];
+			}
+
+			static _dashToCamelCase(str) {
+				return str.replace(/-([a-z])/g, function (g) {
+					return g[1].toUpperCase();
+				});
+			}
+
+			attributeChangedCallback(attribute, oldVal, newVal) {
+
+			};
+		}
+
+		customElements.define('text-fit', TextFit);
+	})();
+</script>

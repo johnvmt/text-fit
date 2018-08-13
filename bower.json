@@ -1,0 +1,20 @@
+{
+  "name": "text-fit",
+  "description": "Fit text to container",
+  "main": "",
+  "authors": [
+    "John Murphy-Teixidor <johnvmtr@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/johnvmt/text-fit",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "textFit": "STRML/textFit"
+  }
+}
