@@ -1,4 +1,4 @@
-<script src="../textFit/textFit.min.js"></script>
+<script src="bower_components/textFit/textFit.min.js"></script>
 
 <template is="text-fit">
 	<style>
@@ -12,6 +12,7 @@
 			display: none;
 		}
 	</style>
+
 	<div style="width: 100%; height: 100%;"><slot></slot></div>
 </template>
 
@@ -21,9 +22,7 @@
 
 		class TextFit extends HTMLElement {
 			constructor() {
-				super();
-
-				let thisElem = this;
+				const thisElem = super();
 
 				// Gets content from <template>
 				const shadow = this.attachShadow({mode: 'open'});
@@ -38,12 +37,14 @@
 				});
 				observer.observe(thisElem, {attributes: false, childList: true, subtree: true});
 
-				thisElem.resizeText();
+				setTimeout(function(){
+					thisElem.resizeText();
+				}, 0);
+
+				return thisElem;
 			}
 
-
 			resizeText() {
-
 				const thisElem = this;
 
 				let options = {};
