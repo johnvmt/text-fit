@@ -1,5 +1,6 @@
 {
   "name": "text-fit",
+  "version": "0.0.3",
   "description": "Fit text to container",
   "main": "",
   "authors": [

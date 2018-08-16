@@ -1,0 +1,21 @@
+{
+  "name": "text-fit",
+  "version": "0.0.3",
+  "description": "Fit text to container",
+  "private": true,
+  "author": {
+    "name": "John Murphy-Teixidor",
+    "email": "johnvmt@gmail.com"
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnvmt/text-fit.git"
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  }
+}

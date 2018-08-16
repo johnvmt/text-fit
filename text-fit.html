@@ -1,4 +1,4 @@
-<script src="bower_components/textFit/textFit.min.js"></script>
+<script src="../textFit/textFit.min.js"></script>
 
 <template is="text-fit">
 	<style>
@@ -7,12 +7,8 @@
 			height: 100%;
 			width: 100%;
 		}
-
-		::slotted(.adjustable-slideshow-hidden) {
-			display: none;
-		}
 	</style>
-
+	<style id="textFitStyleSheet"></style>
 	<div style="width: 100%; height: 100%;"><slot></slot></div>
 </template>
 
@@ -22,7 +18,9 @@
 
 		class TextFit extends HTMLElement {
 			constructor() {
-				const thisElem = super();
+				super();
+
+				const thisElem = this;
 
 				// Gets content from <template>
 				const shadow = this.attachShadow({mode: 'open'});
@@ -30,6 +28,7 @@
 				shadow.appendChild(document.importNode(template, true));
 
 				thisElem._textContainer = shadow.querySelector('div');
+				thisElem._styleContainer = shadow.querySelector('#textFitStyleSheet');
 
 				// Observe changes to subtree
 				const observer = new MutationObserver(function() {
@@ -37,11 +36,10 @@
 				});
 				observer.observe(thisElem, {attributes: false, childList: true, subtree: true});
 
-				setTimeout(function(){
+				setTimeout(function() {
 					thisElem.resizeText();
 				}, 0);
 
-				return thisElem;
 			}
 
 			resizeText() {
@@ -73,6 +71,10 @@
 				});
 
 				textFit(this._textContainer, options);
+
+				let docStyleContainer = document.getElementById("textFitStyleSheet");
+				if(docStyleContainer)
+					this._styleContainer.innerHTML = docStyleContainer.innerHTML;
 			}
 
 			static get observedAttributes() {
@@ -96,7 +98,7 @@
 			}
 
 			attributeChangedCallback(attribute, oldVal, newVal) {
-
+				this.resizeText();
 			};
 		}
 
